@@ -5,12 +5,23 @@ import Red
 import Blue
 import Yellow
 import Green
-import Redroll
-import winsound
-from winsound import *
+
 import pygame
 import time
 import math
+
+# Works for ubuntu/linux also
+try:
+    import winsound
+    from winsound import *
+except ImportError:
+    import os
+    def playsound(frequency,duration):
+        #apt-get install beep
+        os.system('beep -f %s -l %s' % (frequency,duration))
+else:
+    def playsound(frequency,duration):
+        winsound.Beep(frequency,duration)
 
 root = Tk()
 root.title("Ludo")
@@ -34,9 +45,8 @@ def roll_cancel(minimum=1, maximum=6):
     x = y = z = 0
     return x, y, z
 
-rr1 = Redroll.Redroll()
 def leftclick_redroll(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("DiceRoll.mp3")
     pygame.mixer.music.play()
     root.after(500, roll())
@@ -61,8 +71,8 @@ def board():
             y1= 40*j
             x2=40*(i+1)
             y2=40*(j+1)
-            goti_place_offset = 15 
-            
+            goti_place_offset = 15
+
             if (i) in (0,1,2,3,4,5):
                 if j in (0,1,2,3,4,5):
                     canvas.create_rectangle(x1,y1,x2,y2,fill='white',outline='white')
@@ -77,7 +87,7 @@ def board():
                     canvas.create_rectangle(x1,y1,x2,y2,fill='red',outline='red')
             if (i) ==5:
                 if j in (0,1,2,3,4,5):
-                    canvas.create_rectangle(x1,y1,x2,y2,fill='red',outline='red')                
+                    canvas.create_rectangle(x1,y1,x2,y2,fill='red',outline='red')
             if (i) ==2:
                 if j == 2:
                     canvas.create_oval(x1-goti_place_offset,y1-goti_place_offset,x2-goti_place_offset,y2-goti_place_offset,fill='white',outline='white')
@@ -91,8 +101,8 @@ def board():
                 if j ==4:
                     canvas.create_oval(x1-goti_place_offset,y1-goti_place_offset,x2-goti_place_offset,y2-goti_place_offset,fill='white',outline='white')
 
-                    
-                    
+
+
             if (i) in (9,10,11,12,13,14):
                 if j in (0,1,2,3,4,5):
                     canvas.create_rectangle(x1,y1,x2,y2,fill='white',outline='white')
@@ -123,8 +133,8 @@ def board():
 
 
 
-                    
-                    
+
+
             if (i) in (9,10,11,12,13,14):
                 if j in (9,10,11,12,13,14):
                     canvas.create_rectangle(x1,y1,x2,y2,fill='white',outline='white')
@@ -154,7 +164,7 @@ def board():
                     canvas.create_oval(x1-goti_place_offset,y1-goti_place_offset,x2-goti_place_offset,y2-goti_place_offset,fill='white',outline='white')
 
 
-                   
+
             if (i) in (0,1,2,3,4,5):
                 if j in (9,10,11,12,13,14):
                     canvas.create_rectangle(x1,y1,x2,y2,fill='white',outline='white')
@@ -186,7 +196,7 @@ def board():
 
 
 
-                    
+
 ##            if i in (6,7,8):
 ##                if j in (6,7,8):
 ##                    canvas.create_rectangle(x1,y1,x2,y2,fill='magenta',outline="black")
@@ -200,15 +210,15 @@ def board():
             canvas.create_line(300,570,300,590,fill='blue')
             canvas.create_line(300,570,290,580,fill='blue',width=1)
             canvas.create_line(300,570,310,580,fill='blue',width=1)
-            
+
             canvas.create_line(570,300,590,300,fill='yellow')
             canvas.create_line(570,300,580,290,fill='yellow',width=1)
             canvas.create_line(570,300,580,310,fill='yellow',width=1)
-            
+
             canvas.create_line(300,10,300,30,fill='green',width=1)
             canvas.create_line(300,30,290,20,fill='green',width=1)
             canvas.create_line(300,30,310,20,fill='green',width=1)
-            
+
             canvas.create_line(10,300,30,300,fill='red',width=1)
             canvas.create_line(30,300,20,290,fill='red',width=1)
             canvas.create_line(30,300,20,310,fill='red',width=1)
@@ -233,7 +243,7 @@ def board():
                 y+int(r*math.cos(math.pi/5))
                 ]
             canvas.create_polygon(points,fill='white',outline="black")
-            
+
 
             x = 260
             y = 100
@@ -286,7 +296,7 @@ def board():
                 ]
             canvas.create_polygon(points,fill='white',outline="black")
 
-                    
+
             if i in (0,1,2,3,4,5):
                 if j in (6,7,8):
                     canvas.create_rectangle(x1,y1,x2,y2,fill='white')
@@ -329,7 +339,7 @@ def board():
             if i ==8:
                 if j == 1:
                     canvas.create_rectangle(x1,y1,x2,y2,fill='green')
-                    
+
 ##            if i == 2:
 ##                if j == 8:
 ##                    canvas.create_rectangle([(x1+10,y1+10),(x2-10,y2-10)])
@@ -342,7 +352,7 @@ def board():
 ##            if i == 8:
 ##                if j == 12:
 ##                    canvas.create_rectangle([(x1+10,y1+10),(x2-10,y2-10)])
-    canvas.grid(row=100,columnspan=500)    
+    canvas.grid(row=100,columnspan=500)
 
 
 board()
@@ -2949,11 +2959,11 @@ def red1():
             print(r1.x ,r1.position, r1.remainder)
         else:
             roll_cancel()
-          
+
     elif r1.open==0 & r1.firstmove == False:
         if r1.remainder > 0:
             r1.previous_position = r1.position
-            r1.x = x          
+            r1.x = x
             r1.move()
             r1.path()
             r1.xcord1 = r1.xcord1+goti_position*0
@@ -2969,14 +2979,14 @@ def red1():
                 r1.remainder = r1.remainder -r1.x
             else:
                 r1.remainder = r1.remainder - r1.x
-            
+
         elif r1.remainder < 0:
             r1.xcord1 = r1.xcord1+goti_position*0
-            r1.ycord1 = r1.ycord1+goti_position*1-4          
+            r1.ycord1 = r1.ycord1+goti_position*1-4
             canvas.coords(red_1,r1.xcord1,r1.ycord1,r1.xcord1+goti_size,r1.ycord1-goti_size,r1.xcord1+goti_size,r1.ycord1+goti_size)
             r1.position = r1.previous_position
             r1.remainder = r1.last_postiveRemainder
-        elif r1.remainder == 0: 
+        elif r1.remainder == 0:
             print("Home")
         #print(r1.x ,r1.position, r1.remainder)
 #---------------------------------------------------------------------------------------------
@@ -2996,11 +3006,11 @@ def red2():
             print(r2.x ,r2.position, r2.remainder)
         else:
             roll_cancel()
-          
+
     elif r2.open==0 & r2.firstmove == False:
         if r2.remainder > 0:
             r2.previous_position = r2.position
-            r2.x = x          
+            r2.x = x
             r2.move()
             r2.path()
             r2.xcord1 = r2.xcord1+goti_position*0
@@ -3016,14 +3026,14 @@ def red2():
                 r2.remainder = r2.remainder -r2.x
             else:
                 r2.remainder = r2.remainder - r2.x
-            
+
         elif r2.remainder < 0:
             r2.xcord1 = r2.xcord1+goti_position*0
-            r2.ycord1 = r2.ycord1+goti_position*2-4          
+            r2.ycord1 = r2.ycord1+goti_position*2-4
             canvas.coords(red_2,r2.xcord1,r2.ycord1,r2.xcord1+goti_size,r2.ycord1-goti_size,r2.xcord1+goti_size,r2.ycord1+goti_size)
             r2.position = r2.previous_position
             r2.remainder = r2.last_postiveRemainder
-        elif r2.remainder == 0: 
+        elif r2.remainder == 0:
             print("Home")
         #print(r2.x ,r2.position, r2.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3043,11 +3053,11 @@ def red3():
             print(r3.x ,r3.position, r3.remainder)
         else:
             roll_cancel()
-          
+
     elif r3.open==0 & r3.firstmove == False:
         if r3.remainder > 0:
             r3.previous_position = r3.position
-            r3.x = x          
+            r3.x = x
             r3.move()
             r3.path()
             r3.xcord1 = r3.xcord1+goti_position*0
@@ -3063,14 +3073,14 @@ def red3():
                 r3.remainder = r3.remainder -r3.x
             else:
                 r3.remainder = r3.remainder - r3.x
-            
+
         elif r3.remainder < 0:
             r3.xcord1 = r3.xcord1+goti_position*0
-            r3.ycord1 = r3.ycord1+goti_position*3-4          
+            r3.ycord1 = r3.ycord1+goti_position*3-4
             canvas.coords(red_3,r3.xcord1,r3.ycord1,r3.xcord1+goti_size,r3.ycord1-goti_size,r3.xcord1+goti_size,r3.ycord1+goti_size)
             r3.position = r3.previous_position
             r3.remainder = r3.last_postiveRemainder
-        elif r3.remainder == 0: 
+        elif r3.remainder == 0:
             print("Home")
         #print(r3.x ,r3.position, r3.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3090,11 +3100,11 @@ def red4():
             print(r4.x ,r4.position, r4.remainder)
         else:
             roll_cancel()
-          
+
     elif r4.open==0 & r4.firstmove == False:
         if r4.remainder > 0:
             r4.previous_position = r4.position
-            r4.x = x          
+            r4.x = x
             r4.move()
             r4.path()
             r4.xcord1 = r4.xcord1+goti_position*0
@@ -3110,14 +3120,14 @@ def red4():
                 r4.remainder = r4.remainder -r4.x
             else:
                 r4.remainder = r4.remainder - r4.x
-            
+
         elif r4.remainder < 0:
             r4.xcord1 = r4.xcord1+goti_position*0
-            r4.ycord1 = r4.ycord1+goti_position*4-4          
+            r4.ycord1 = r4.ycord1+goti_position*4-4
             canvas.coords(red_4,r4.xcord1,r4.ycord1,r4.xcord1+goti_size,r4.ycord1-goti_size,r4.xcord1+goti_size,r4.ycord1+goti_size)
             r4.position = r4.previous_position
             r4.remainder = r4.last_postiveRemainder
-        elif r4.remainder == 0: 
+        elif r4.remainder == 0:
             print("Home")
         #print(r4.x ,r4.position, r4.remainder)
 #--------------------------------------------------------------------------------------------
@@ -3137,11 +3147,11 @@ def blue1():
             print(b1.x ,b1.position, b1.remainder)
         else:
             roll_cancel()
-          
+
     elif b1.open==0 & b1.firstmove == False:
         if b1.remainder > 0:
             b1.previous_position = b1.position
-            b1.x = x          
+            b1.x = x
             b1.move()
             b1.path()
             b1.xcord1 = b1.xcord1+goti_position*1
@@ -3157,14 +3167,14 @@ def blue1():
                 b1.remainder = b1.remainder -b1.x
             else:
                 b1.remainder = b1.remainder - b1.x
-            
+
         elif b1.remainder < 0:
             b1.xcord1 = b1.xcord1+goti_position*1
-            b1.ycord1 = b1.ycord1+goti_position*1-4          
+            b1.ycord1 = b1.ycord1+goti_position*1-4
             canvas.coords(blue_1,b1.xcord1,b1.ycord1,b1.xcord1+goti_size,b1.ycord1-goti_size,b1.xcord1+goti_size,b1.ycord1+goti_size)
             b1.position = b1.previous_position
             b1.remainder = b1.last_postiveRemainder
-        elif b1.remainder == 0: 
+        elif b1.remainder == 0:
             print("Home")
         #print(b1.x ,b1.position, b1.remainder)
 #---------------------------------------------------------------------------------------------
@@ -3184,11 +3194,11 @@ def blue2():
             print(b2.x ,b2.position, b2.remainder)
         else:
             roll_cancel()
-          
+
     elif b2.open==0 & b2.firstmove == False:
         if b2.remainder > 0:
             b2.previous_position = b2.position
-            b2.x = x          
+            b2.x = x
             b2.move()
             b2.path()
             b2.xcord1 = b2.xcord1+goti_position*1
@@ -3204,14 +3214,14 @@ def blue2():
                 b2.remainder = b2.remainder -b2.x
             else:
                 b2.remainder = b2.remainder - b2.x
-            
+
         elif b2.remainder < 0:
             b2.xcord1 = b2.xcord1+goti_position*1
-            b2.ycord1 = b2.ycord1+goti_position*2-4          
+            b2.ycord1 = b2.ycord1+goti_position*2-4
             canvas.coords(blue_2,b2.xcord1,b2.ycord1,b2.xcord1+goti_size,b2.ycord1-goti_size,b2.xcord1+goti_size,b2.ycord1+goti_size)
             b2.position = b2.previous_position
             b2.remainder = b2.last_postiveRemainder
-        elif b2.remainder == 0: 
+        elif b2.remainder == 0:
             print("Home")
         #print(b2.x ,b2.position, b2.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3231,11 +3241,11 @@ def blue3():
             print(b3.x ,b3.position, b3.remainder)
         else:
             roll_cancel()
-          
+
     elif b3.open==0 & b3.firstmove == False:
         if b3.remainder > 0:
             b3.previous_position = b3.position
-            b3.x = x          
+            b3.x = x
             b3.move()
             b3.path()
             b3.xcord1 = b3.xcord1+goti_position*1
@@ -3251,14 +3261,14 @@ def blue3():
                 b3.remainder = b3.remainder -b3.x
             else:
                 b3.remainder = b3.remainder - b3.x
-            
+
         elif b3.remainder < 0:
             b3.xcord1 = b3.xcord1+goti_position*1
-            b3.ycord1 = b3.ycord1+goti_position*3-4          
+            b3.ycord1 = b3.ycord1+goti_position*3-4
             canvas.coords(blue_3,b3.xcord1,b3.ycord1,b3.xcord1+goti_size,b3.ycord1-goti_size,b3.xcord1+goti_size,b3.ycord1+goti_size)
             b3.position = b3.previous_position
             b3.remainder = b3.last_postiveRemainder
-        elif b3.remainder == 0: 
+        elif b3.remainder == 0:
             print("Home")
         #print(b3.x ,b3.position, b3.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3278,11 +3288,11 @@ def blue4():
             print(b4.x ,b4.position, b4.remainder)
         else:
             roll_cancel()
-          
+
     elif b4.open==0 & b4.firstmove == False:
         if b4.remainder > 0:
             b4.previous_position = b4.position
-            b4.x = x          
+            b4.x = x
             b4.move()
             b4.path()
             b4.xcord1 = b4.xcord1+goti_position*1
@@ -3298,14 +3308,14 @@ def blue4():
                 b4.remainder = b4.remainder -b4.x
             else:
                 b4.remainder = b4.remainder - b4.x
-            
+
         elif b4.remainder < 0:
             b4.xcord1 = b4.xcord1+goti_position*1
-            b4.ycord1 = b4.ycord1+goti_position*4-4         
+            b4.ycord1 = b4.ycord1+goti_position*4-4
             canvas.coords(blue_4,b4.xcord1,b4.ycord1,b4.xcord1+goti_size,b4.ycord1-goti_size,b4.xcord1+goti_size,b4.ycord1+goti_size)
             b4.position = b4.previous_position
             b4.remainder = b4.last_postiveRemainder
-        elif b4.remainder == 0: 
+        elif b4.remainder == 0:
             print("Home")
 #print(b4.x ,b4.position, b4.remainder)
 #---------------------------------------------------------------------------------------------
@@ -3326,11 +3336,11 @@ def yellow1():
             print(y1.x ,y1.position, y1.remainder)
         else:
             roll_cancel()
-          
+
     elif y1.open==0 & y1.firstmove == False:
         if y1.remainder > 0:
             y1.previous_position = y1.position
-            y1.x = x          
+            y1.x = x
             y1.move()
             y1.path()
             y1.xcord1 = y1.xcord1+goti_position*2
@@ -3346,14 +3356,14 @@ def yellow1():
                 y1.remainder = y1.remainder -y1.x
             else:
                 y1.remainder = y1.remainder - y1.x
-            
+
         elif y1.remainder < 0:
             y1.xcord1 = y1.xcord1+goti_position*2
-            y1.ycord1 = y1.ycord1+goti_position*1-4          
+            y1.ycord1 = y1.ycord1+goti_position*1-4
             canvas.coords(yellow_1,y1.xcord1,y1.ycord1,y1.xcord1+goti_size,y1.ycord1-goti_size,y1.xcord1+goti_size,y1.ycord1+goti_size)
             y1.position = y1.previous_position
             y1.remainder = y1.last_postiveRemainder
-        elif y1.remainder == 0: 
+        elif y1.remainder == 0:
             print("Home")
         #print(y1.x ,y1.position, y1.remainder)
 #---------------------------------------------------------------------------------------------
@@ -3373,11 +3383,11 @@ def yellow2():
             print(y2.x ,y2.position, y2.remainder)
         else:
             roll_cancel()
-          
+
     elif y2.open==0 & y2.firstmove == False:
         if y2.remainder > 0:
             y2.previous_position = y2.position
-            y2.x = x          
+            y2.x = x
             y2.move()
             y2.path()
             y2.xcord1 = y2.xcord1+goti_position*2
@@ -3393,14 +3403,14 @@ def yellow2():
                 y2.remainder = y2.remainder -y2.x
             else:
                 y2.remainder = y2.remainder - y2.x
-            
+
         elif y2.remainder < 0:
             y2.xcord1 = y2.xcord1+goti_position*2
-            y2.ycord1 = y2.ycord1+goti_position*2-4          
+            y2.ycord1 = y2.ycord1+goti_position*2-4
             canvas.coords(yellow_2,y2.xcord1,y2.ycord1,y2.xcord1+goti_size,y2.ycord1-goti_size,y2.xcord1+goti_size,y2.ycord1+goti_size)
             y2.position = y2.previous_position
             y2.remainder = y2.last_postiveRemainder
-        elif y2.remainder == 0: 
+        elif y2.remainder == 0:
             print("Home")
         #print(y2.x ,y2.position, y2.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3420,11 +3430,11 @@ def yellow3():
             print(y3.x ,y3.position, y3.remainder)
         else:
             roll_cancel()
-          
+
     elif y3.open==0 & y3.firstmove == False:
         if y3.remainder > 0:
             y3.previous_position = y3.position
-            y3.x = x          
+            y3.x = x
             y3.move()
             y3.path()
             y3.xcord1 = y3.xcord1+goti_position*2
@@ -3440,14 +3450,14 @@ def yellow3():
                 y3.remainder = y3.remainder -y3.x
             else:
                 y3.remainder = y3.remainder - y3.x
-            
+
         elif y3.remainder < 0:
             y3.xcord1 = y3.xcord1+goti_position*2
-            y3.ycord1 = y3.ycord1+goti_position*3-4          
+            y3.ycord1 = y3.ycord1+goti_position*3-4
             canvas.coords(yellow_3,y3.xcord1,y3.ycord1,y3.xcord1+goti_size,y3.ycord1-goti_size,y3.xcord1+goti_size,y3.ycord1+goti_size)
             y3.position = y3.previous_position
             y3.remainder = y3.last_postiveRemainder
-        elif y3.remainder == 0: 
+        elif y3.remainder == 0:
             print("Home")
         #print(y3.x ,y3.position, y3.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3467,11 +3477,11 @@ def yellow4():
             print(y4.x ,y4.position, y4.remainder)
         else:
             roll_cancel()
-          
+
     elif y4.open==0 & y4.firstmove == False:
         if y4.remainder > 0:
             y4.previous_position = y4.position
-            y4.x = x          
+            y4.x = x
             y4.move()
             y4.path()
             y4.xcord1 = y4.xcord1+goti_position*2
@@ -3487,14 +3497,14 @@ def yellow4():
                 y4.remainder = y4.remainder -y4.x
             else:
                 y4.remainder = y4.remainder - y4.x
-            
+
         elif y4.remainder < 0:
             y4.xcord1 = y4.xcord1+goti_position*2
-            y4.ycord1 = y4.ycord1+goti_position*4-4          
+            y4.ycord1 = y4.ycord1+goti_position*4-4
             canvas.coords(yellow_4,y4.xcord1,y4.ycord1,y4.xcord1+goti_size,y4.ycord1-goti_size,y4.xcord1+goti_size,y4.ycord1+goti_size)
             y4.position = y4.previous_position
             y4.remainder = y4.last_postiveRemainder
-        elif y4.remainder == 0: 
+        elif y4.remainder == 0:
             print("Home")
 #print(y4.x ,y4.position, y4.remainder)
 #-------------------------------------------------------------------------------------------------------
@@ -3514,11 +3524,11 @@ def green1():
             print(g1.x ,g1.position, g1.remainder)
         else:
             roll_cancel()
-          
+
     elif g1.open==0 & g1.firstmove == False:
         if g1.remainder > 0:
             g1.previous_position = g1.position
-            g1.x = x          
+            g1.x = x
             g1.move()
             g1.path()
             g1.xcord1 = g1.xcord1+goti_position*3
@@ -3534,14 +3544,14 @@ def green1():
                 g1.remainder = g1.remainder -g1.x
             else:
                 g1.remainder = g1.remainder - g1.x
-            
+
         elif g1.remainder < 0:
             g1.xcord1 = g1.xcord1+goti_position*3
-            g1.ycord1 = g1.ycord1+goti_position*1-4          
+            g1.ycord1 = g1.ycord1+goti_position*1-4
             canvas.coords(green_1,g1.xcord1,g1.ycord1,g1.xcord1+goti_size,g1.ycord1-goti_size,g1.xcord1+goti_size,g1.ycord1+goti_size)
             g1.position = g1.previous_position
             g1.remainder = g1.last_postiveRemainder
-        elif g1.remainder == 0: 
+        elif g1.remainder == 0:
             print("Home")
         #print(g1.x ,g1.position, g1.remainder)
 #---------------------------------------------------------------------------------------------
@@ -3561,11 +3571,11 @@ def green2():
             print(g2.x ,g2.position, g2.remainder)
         else:
             roll_cancel()
-          
+
     elif g2.open==0 & g2.firstmove == False:
         if g2.remainder > 0:
             g2.previous_position = g2.position
-            g2.x = x          
+            g2.x = x
             g2.move()
             g2.path()
             g2.xcord1 = g2.xcord1+goti_position*3
@@ -3581,14 +3591,14 @@ def green2():
                 g2.remainder = g2.remainder -g2.x
             else:
                 g2.remainder = g2.remainder - g2.x
-            
+
         elif g2.remainder < 0:
             g2.xcord1 = g2.xcord1+goti_position*3
-            g2.ycord1 = g2.ycord1+goti_position*2-4          
+            g2.ycord1 = g2.ycord1+goti_position*2-4
             canvas.coords(green_2,g2.xcord1,g2.ycord1,g2.xcord1+goti_size,g2.ycord1-goti_size,g2.xcord1+goti_size,g2.ycord1+goti_size)
             g2.position = g2.previous_position
             g2.remainder = g2.last_postiveRemainder
-        elif g2.remainder == 0: 
+        elif g2.remainder == 0:
             print("Home")
         #print(g2.x ,g2.position, g2.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3608,11 +3618,11 @@ def green3():
             print(g3.x ,g3.position, g3.remainder)
         else:
             roll_cancel()
-          
+
     elif g3.open==0 & g3.firstmove == False:
         if g3.remainder > 0:
             g3.previous_position = g3.position
-            g3.x = x          
+            g3.x = x
             g3.move()
             g3.path()
             g3.xcord1 = g3.xcord1+goti_position*3
@@ -3628,14 +3638,14 @@ def green3():
                 g3.remainder = g3.remainder -g3.x
             else:
                 g3.remainder = g3.remainder - g3.x
-            
+
         elif g3.remainder < 0:
             g3.xcord1 = g3.xcord1+goti_position*3
-            g3.ycord1 = g3.ycord1+goti_position*3-4          
+            g3.ycord1 = g3.ycord1+goti_position*3-4
             canvas.coords(green_3,g3.xcord1,g3.ycord1,g3.xcord1+goti_size,g3.ycord1-goti_size,g3.xcord1+goti_size,g3.ycord1+goti_size)
             g3.position = g3.previous_position
             g3.remainder = g3.last_postiveRemainder
-        elif g3.remainder == 0: 
+        elif g3.remainder == 0:
             print("Home")
         #print(g3.x ,g3.position, g3.remainder)
 #----------------------------------------------------------------------------------------------
@@ -3655,11 +3665,11 @@ def green4():
             print(g4.x ,g4.position, g4.remainder)
         else:
             roll_cancel()
-          
+
     elif g4.open==0 & g4.firstmove == False:
         if g4.remainder > 0:
             g4.previous_position = g4.position
-            g4.x = x          
+            g4.x = x
             g4.move()
             g4.path()
             g4.xcord1 = g4.xcord1+goti_position*3
@@ -3675,113 +3685,113 @@ def green4():
                 g4.remainder = g4.remainder -g4.x
             else:
                 g4.remainder = g4.remainder - g4.x
-            
+
         elif g4.remainder < 0:
             g4.xcord1 = g4.xcord1+goti_position*3
-            g4.ycord1 = g4.ycord1+goti_position*4-4          
+            g4.ycord1 = g4.ycord1+goti_position*4-4
             canvas.coords(green_4,g4.xcord1,g4.ycord1,g4.xcord1+goti_size,g4.ycord1-goti_size,g4.xcord1+goti_size,g4.ycord1+goti_size)
             g4.position = g4.previous_position
             g4.remainder = g4.last_postiveRemainder
-        elif g4.remainder == 0: 
+        elif g4.remainder == 0:
             print("Home")
 #print(g4.x ,g4.position, g4.remainder)
 #----------------------------------------------------------------------------------
 
 
-            
+
 r1 = Red.Red()
 def leftclick_r1(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     red1()
 r2 = Red.Red()
 def leftclick_r2(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     red2()
 b3 = Red.Red()
 def leftclick_r3(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
-    pygame.mixer.music.play()    
+    pygame.mixer.music.play()
     red3()
 r4 = Red.Red()
 def leftclick_r4(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     red4()
 b1 = Blue.Blue()
 def leftclick_b1(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     blue1()
 b2 = Blue.Blue()
 def leftclick_b2(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     blue2()
 b3 = Blue.Blue()
 def leftclick_b3(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     blue3()
 b4 = Blue.Blue()
 def leftclick_b4(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     blue4()
 y1 = Yellow.Yellow()
 def leftclick_y1(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     yellow1()
 y2 = Yellow.Yellow()
 def leftclick_y2(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     yellow2()
 y3 = Yellow.Yellow()
 def leftclick_y3(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     yellow3()
 y4 = Yellow.Yellow()
 def leftclick_y4(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
-    yellow4()  
+    yellow4()
 g1 = Green.Green()
 def leftclick_g1(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     green1()
 g2 = Green.Green()
 def leftclick_g2(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     green2()
 g3 = Green.Green()
 def leftclick_g3(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     green3()
 g4 = Green.Green()
 def leftclick_g4(event):
-    pygame.mixer.init()    
+    pygame.mixer.init()
     pygame.mixer.music.load("click_sound.mp3")
     pygame.mixer.music.play()
     green4()
@@ -3806,20 +3816,3 @@ canvas.tag_bind(green_4,"<Button-1>", leftclick_g4)
 
 
 root.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
